@@ -2,6 +2,11 @@
 
 This is a project developed by Yinon Bachar.
 
+## What does it contain?
+- Used csv table
+- web files (python & HTML)
+- jupyter file
+
 ## Getting Started
 
 These instructions will guide you on how to clone the repository and run the project on your local computer.
@@ -15,15 +20,15 @@ Before you begin, ensure that you have the following installed:
 - Git (https://git-scm.com/downloads)
 - Kaggle API token(https://www.kaggle.com/settings) the file name is kaggle.json
 
-### What does it contain?
-- Used csv table
-- web files (python & HTML)
-- jupyter file
-
 ### Clone the Repository
 
 To download the project, open your Git Bash or command line and run the following command:
 
-cd <"The path you want to download the file to">
+cd <"The path you want to download the file to"> (Recommended to download in the user's folder)
 
 git clone https://github.com/Yinonbachar/Yinon-Project-Steam-Game.git
+
+## How to run the project?
+- Open the jupyter notebook
+- Running the file jupyter notebook you get the table about steam games + graphs that are related to the table
+- Run the python file named main.py found in the project
