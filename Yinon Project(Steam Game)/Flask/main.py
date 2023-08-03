@@ -7,6 +7,9 @@ app = Flask(__name__)
 PAGE_SIZE = 20
 uploaded_tables = {}  # Dictionary to store uploaded tables
 table_path = os.path.expanduser("~/SteamGameFinal.csv")  # Set the initial table path
+original_table_data = pd.read_csv(table_path)  # Store the original table data
+original_table_data.insert(0, 'ID', range(1, len(original_table_data) + 1))  # Add an ID column starting from 1
+current_table_data = original_table_data.copy()  # Store the current table data (initialized with the original data)
 
 
 def load_table(table_name=None):
@@ -121,10 +124,13 @@ def index():
     :return: The rendered HTML template with the table data and pagination.
     :rtype: str
     """
+    global current_table_data
     # Get the table name from the query string
     table_name = request.args.get('table')
-    global uploaded_tables
-    table_data = uploaded_tables.get(table_name) if table_name else load_table()
+    if table_name:
+        table_data = uploaded_tables.get(table_name)
+    else:
+        table_data = current_table_data
 
     # Clean the data to format numeric columns
     table_data_cleaned = clean_data(table_data)
@@ -193,16 +199,13 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    """
-    Handle the file upload request.
-
-    :return: Redirect to the main page with the uploaded table or back to the main page if no file was uploaded.
-    :rtype: werkzeug.wrappers.response.Response
-    """
+    global current_table_data
     file = request.files['csv_file']
     if file:
         # Update the table with the uploaded file
         table_name = update_table(file)
+        # Set the current table data to the uploaded table
+        current_table_data = uploaded_tables.get(table_name).copy()
         # Redirect to the main page with the uploaded table
         return redirect(f'/?table={table_name}')
     # If no file was uploaded or there was an error, redirect to the main page
@@ -211,16 +214,10 @@ def upload():
 
 @app.route('/restore_original', methods=['POST'])
 def restore_original():
-    """
-    Handle the request to restore the original table data.
-
-    :return: Redirect to the main page with the original table data.
-    :rtype: werkzeug.wrappers.response.Response
-    """
-    global uploaded_tables
-    # Load the original table_data from the CSV file
-    table_data = load_table()
-    uploaded_tables.clear()  # Clear all the uploaded tables
+    global current_table_data
+    # Set the current table data back to the original table data
+    current_table_data = original_table_data.copy()
+    # Redirect to the main page with the original table data
     return redirect('/')
 
 
