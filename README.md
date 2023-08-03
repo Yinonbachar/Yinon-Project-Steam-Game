@@ -24,6 +24,6 @@ Before you begin, ensure that you have the following installed:
 
 To download the project, open your Git Bash or command line and run the following command:
 
-cd <The path you want to download the file to>
+cd <"The path you want to download the file to">
 
 git clone https://github.com/Yinonbachar/Yinon-Project-Steam-Game.git
