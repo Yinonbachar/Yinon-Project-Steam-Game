@@ -122,70 +122,70 @@
         <button type="submit" style="background-color: #ff5722; color: #ffffff; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">Restore Original Data</button>
     </form>
 
-    <!-- Table display with dynamic column names -->
-    <table>
-        <thead>
-            <!-- Loop over column names and create table header -->
-            <tr>
-                {% for col in columns %}
-                <th>{{ col }}</th>
+        <!-- Table display with dynamic column names -->
+        <table>
+            <thead>
+                <!-- Loop over column names and create table header -->
+                <tr>
+                    {% for col in columns %}
+                    <th>{{ col }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Loop over rows of data and create table rows -->
+                {% for index, row in table_data.iterrows() %}
+                <tr>
+                    {% for col in columns %}
+                    <td>{{ row[col] }}</td>
+                    {% endfor %}
+                </tr>
                 {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Loop over rows of data and create table rows -->
-            {% for index, row in table_data.iterrows() %}
-            <tr>
-                {% for col in columns %}
-                <td>{{ row[col] }}</td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <!-- Pagination links -->
-    <div class="pagination">
-        <div>
-            <!-- Pagination links for navigating to previous and first pages -->
-            {% if page > 1 %}
-                <a href="/?page=1{% if search_term %}&search={{ search_term }}{% endif %}{% if all_columns_selected %}&column=select_all{% endif %}{% for col in selected_columns %}&column={{ col }}{% endfor %}" class="page-link">&laquo; First</a>
-                <a href="/?page={{ page - 1 }}{% if search_term %}&search={{ search_term }}{% endif %}{% if all_columns_selected %}&column=select_all{% endif %}{% for col in selected_columns %}&column={{ col }}{% endfor %}" class="page-link">&lsaquo; Previous</a>
-            {% endif %}
-            <!-- Pagination links for individual pages -->
-            {% for i in page_range %}
-                {% if i == page %}
-                    <span class="active">{{ i }}</span>
-                {% else %}
-                    <a href="/?page={{ i }}{% if search_term %}&search={{ search_term }}{% endif %}{% if all_columns_selected %}&column=select_all{% endif %}{% for col in selected_columns %}&column={{ col }}{% endfor %}" class="page-link">{{ i }}</a>
+            </tbody>
+        </table>
+    
+        <!-- Pagination links -->
+        <div class="pagination">
+            <div>
+                <!-- Pagination links for navigating to previous and first pages -->
+                {% if page > 1 %}
+                    <a href="/?page=1{% if search_term %}&search={{ search_term }}{% endif %}{% if all_columns_selected %}&column=select_all{% endif %}{% for col in selected_columns %}&column={{ col }}{% endfor %}" class="page-link">&laquo; First</a>
+                    <a href="/?page={{ page - 1 }}{% if search_term %}&search={{ search_term }}{% endif %}{% if all_columns_selected %}&column=select_all{% endif %}{% for col in selected_columns %}&column={{ col }}{% endfor %}" class="page-link">&lsaquo; Previous</a>
                 {% endif %}
-            {% endfor %}
-            <!-- Pagination links for navigating to next and last pages -->
-            {% if page < num_pages %}
-                <a href="/?page={{ page + 1 }}{% if search_term %}&search={{ search_term }}{% endif %}{% if all_columns_selected %}&column=select_all{% endif %}{% for col in selected_columns %}&column={{ col }}{% endfor %}" class="page-link">Next &rsaquo;</a>
-                <a href="/?page={{ num_pages }}{% if search_term %}&search={{ search_term }}{% endif %}{% if all_columns_selected %}&column=select_all{% endif %}{% for col in selected_columns %}&column={{ col }}{% endfor %}" class="page-link">Last &raquo;</a>
-            {% endif %}
+                <!-- Pagination links for individual pages -->
+                {% for i in page_range %}
+                    {% if i == page %}
+                        <span class="active">{{ i }}</span>
+                    {% else %}
+                        <a href="/?page={{ i }}{% if search_term %}&search={{ search_term }}{% endif %}{% if all_columns_selected %}&column=select_all{% endif %}{% for col in selected_columns %}&column={{ col }}{% endfor %}" class="page-link">{{ i }}</a>
+                    {% endif %}
+                {% endfor %}
+                <!-- Pagination links for navigating to next and last pages -->
+                {% if page < num_pages %}
+                    <a href="/?page={{ page + 1 }}{% if search_term %}&search={{ search_term }}{% endif %}{% if all_columns_selected %}&column=select_all{% endif %}{% for col in selected_columns %}&column={{ col }}{% endfor %}" class="page-link">Next &rsaquo;</a>
+                    <a href="/?page={{ num_pages }}{% if search_term %}&search={{ search_term }}{% endif %}{% if all_columns_selected %}&column=select_all{% endif %}{% for col in selected_columns %}&column={{ col }}{% endfor %}" class="page-link">Last &raquo;</a>
+                {% endif %}
+            </div>
+            <!-- Display page information -->
+            <div>
+                <p class="page-info">Page {{ page }} of {{ num_pages }} ({{ num_rows }} rows)</p>
+            </div>
         </div>
-        <!-- Display page information -->
-        <div>
-            <p class="page-info">Page {{ page }} of {{ num_pages }} ({{ num_rows }} rows)</p>
-        </div>
-    </div>
-
-    <!-- JavaScript code for dropdown behavior -->
-    <script>
-        document.getElementById('column-dropdown').addEventListener('change', function() {
-            var selectedOption = this.options[this.selectedIndex];
-            if (selectedOption.value === "select_all") {
-                document.querySelectorAll('input[type=radio]').forEach(function(radio) {
-                    radio.style.display = 'none';
-                });
-            } else {
-                document.querySelectorAll('input[type=radio]').forEach(function(radio) {
-                    radio.style.display = 'inline';
-                });
-            }
-        });
-    </script>
-</body>
-</html>
+    
+        <!-- JavaScript code for dropdown behavior -->
+        <script>
+            document.getElementById('column-dropdown').addEventListener('change', function() {
+                var selectedOption = this.options[this.selectedIndex];
+                if (selectedOption.value === "select_all") {
+                    document.querySelectorAll('input[type=radio]').forEach(function(radio) {
+                        radio.style.display = 'none';
+                    });
+                } else {
+                    document.querySelectorAll('input[type=radio]').forEach(function(radio) {
+                        radio.style.display = 'inline';
+                    });
+                }
+            });
+        </script>
+    </body>
+    </html>
