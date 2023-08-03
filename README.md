@@ -11,7 +11,7 @@ These instructions will guide you on how to clone the repository and run the pro
 Before you begin, ensure that you have the following installed:
 
 - Python 3.x (https://www.python.org/downloads/)
-- Python libraries - kaggle,flask,pandas,shutil,os,matplotlib
+- Python libraries - kaggle, flask, pandas, shutil, os, matplotlib
 - Git (https://git-scm.com/downloads)
 - Kaggle API token(https://www.kaggle.com/settings) the file name is kaggle.json
 
