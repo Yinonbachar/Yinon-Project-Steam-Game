@@ -1,5 +1,5 @@
 # Yinon-Project-Steam-Game
-
+The project takes a table that contains data about steam games and the project removes and adds columns and shows graphs about this data
 This is a project developed by Yinon Bachar.
 
 ## What does it contain?
