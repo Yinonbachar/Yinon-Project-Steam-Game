@@ -1,5 +1,7 @@
 # Yinon-Project-Steam-Game
-The project takes a table that contains data about steam games and the project removes and adds columns and shows graphs about this data
+The project takes a table that contains data about steam games and the project removes and adds columns and shows graphs about this data.
+In addition there is also a site that runs and displays the table Jupyter made.
+The site has filters and it is possible to replace the site's table with another table.
 This is a project developed by Yinon Bachar.
 
 ## What does it contain?
