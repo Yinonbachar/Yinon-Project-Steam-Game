@@ -3,7 +3,7 @@
 This is a project developed by Yinon Bachar.
 
 ## What does it contain?
-- Used csv table
+- Final csv table
 - web files (python & HTML)
 - jupyter file
 
@@ -24,11 +24,14 @@ Before you begin, ensure that you have the following installed:
 
 To download the project, open your Git Bash or command line and run the following command:
 
-- cd <"The path you want to download the file to"> (Recommended to download in the user's folder)
+-- cd <"The path you want to download the file to"> (Recommended to download in the user's folder)
 
-- git clone https://github.com/Yinonbachar/Yinon-Project-Steam-Game.git
+-- git clone https://github.com/Yinonbachar/Yinon-Project-Steam-Game.git
 
 ## How to run the project?
 - Open the jupyter notebook
 - Running the file jupyter notebook you get the table about steam games + graphs that are related to the table
 - Run the python file named main.py found in the project
+
+### Where is the table taken from?
+https://www.kaggle.com/datasets/mexwell/steamgames
