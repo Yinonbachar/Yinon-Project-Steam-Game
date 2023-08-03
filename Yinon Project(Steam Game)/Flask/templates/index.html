@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Yinon presentation</title>
+    <!-- CSS styles -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #000000;
+            margin-bottom: 20px;
+            font-size: 36px;
+            text-shadow: 2px 2px 4px #cccccc;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #ffffff;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: #1a73e8;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .pagination a {
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            text-decoration: none;
+            color: #1a73e8;
+            margin: 0 5px;
+            border-radius: 5px;
+        }
+
+        .pagination a.active {
+            background-color: #1a73e8;
+            color: #ffffff;
+        }
+
+        .pagination p {
+            margin: 10px 0;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .column-select-container {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 5px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .dropdown:hover .column-select-container {
+            display: block;
+        }
+
+        .dropdown-content li {
+            list-style-type: none;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; color: #000000; margin-bottom: 20px; font-size: 36px; text-shadow: 2px 2px 4px #cccccc;">Yinon presentation</h1>
+    <!-- Search form for filtering table data -->
+    <form action="/" method="GET" class="search-form">
+        <!-- Search input -->
+        <label for="search-term">Search:</label>
+        <input type="text" name="search" id="search-term" placeholder="Enter search term" value="{{ search_term }}">
+        <br>
+        <!-- Dropdown menu for selecting columns to search -->
+        <div class="dropdown">
+            <label for="column-dropdown">Select Columns:</label>
+            <select id="column-dropdown" name="column">
+                <!-- Option to select all columns -->
+                <option value="select_all" {% if not selected_columns_value %}selected{% endif %}>All Columns</option>
+                <!-- Loop over column names and create an option for each -->
+                {% for col in columns %}
+                    <option value="{{ col }}" {% if col in selected_columns %}selected{% endif %}>{{ col }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <!-- Submit button for the search form -->
+        <button type="submit" style="background-color: #1a73e8; color: #ffffff; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">Search</button>
+    </form>
+
+    <!-- Form for uploading a CSV file -->
+    <form action="/upload" method="POST" enctype="multipart/form-data" style="margin-top: 20px;">
+        <label for="csv_file">Upload CSV file:</label>
+        <input type="file" id="csv_file" name="csv_file">
+        <button type="submit" style="background-color: #1a73e8; color: #ffffff; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">Upload</button>
+    </form>
+
+    <!-- Form for restoring the original data -->
+    <form action="/restore_original" method="POST" style="margin-top: 20px;">
+        <button type="submit" style="background-color: #ff5722; color: #ffffff; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">Restore Original Data</button>
+    </form>
+
+    <!-- Table display with dynamic column names -->
+    <table>
+        <thead>
+            <!-- Loop over column names and create table header -->
+            <tr>
+                {% for col in columns %}
+                <th>{{ col }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loop over rows of data and create table rows -->
+            {% for index, row in table_data.iterrows() %}
+            <tr>
+                {% for col in columns %}
+                <td>{{ row[col] }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Pagination links -->
+    <div class="pagination">
+        <div>
+            <!-- Pagination links for navigating to previous and first pages -->
+            {% if page > 1 %}
+                <a href="/?page=1{% if search_term %}&search={{ search_term }}{% endif %}{% if all_columns_selected %}&column=select_all{% endif %}{% for col in selected_columns %}&column={{ col }}{% endfor %}" class="page-link">&laquo; First</a>
+                <a href="/?page={{ page - 1 }}{% if search_term %}&search={{ search_term }}{% endif %}{% if all_columns_selected %}&column=select_all{% endif %}{% for col in selected_columns %}&column={{ col }}{% endfor %}" class="page-link">&lsaquo; Previous</a>
+            {% endif %}
+            <!-- Pagination links for individual pages -->
+            {% for i in page_range %}
+                {% if i == page %}
+                    <span class="active">{{ i }}</span>
+                {% else %}
+                    <a href="/?page={{ i }}{% if search_term %}&search={{ search_term }}{% endif %}{% if all_columns_selected %}&column=select_all{% endif %}{% for col in selected_columns %}&column={{ col }}{% endfor %}" class="page-link">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+            <!-- Pagination links for navigating to next and last pages -->
+            {% if page < num_pages %}
+                <a href="/?page={{ page + 1 }}{% if search_term %}&search={{ search_term }}{% endif %}{% if all_columns_selected %}&column=select_all{% endif %}{% for col in selected_columns %}&column={{ col }}{% endfor %}" class="page-link">Next &rsaquo;</a>
+                <a href="/?page={{ num_pages }}{% if search_term %}&search={{ search_term }}{% endif %}{% if all_columns_selected %}&column=select_all{% endif %}{% for col in selected_columns %}&column={{ col }}{% endfor %}" class="page-link">Last &raquo;</a>
+            {% endif %}
+        </div>
+        <!-- Display page information -->
+        <div>
+            <p class="page-info">Page {{ page }} of {{ num_pages }} ({{ num_rows }} rows)</p>
+        </div>
+    </div>
+
+    <!-- JavaScript code for dropdown behavior -->
+    <script>
+        document.getElementById('column-dropdown').addEventListener('change', function() {
+            var selectedOption = this.options[this.selectedIndex];
+            if (selectedOption.value === "select_all") {
+                document.querySelectorAll('input[type=radio]').forEach(function(radio) {
+                    radio.style.display = 'none';
+                });
+            } else {
+                document.querySelectorAll('input[type=radio]').forEach(function(radio) {
+                    radio.style.display = 'inline';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
